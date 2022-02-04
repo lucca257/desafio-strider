@@ -18,17 +18,16 @@ COPY --chown=1000:www-data ./docker/app/entrypoint.sh /docker/
 COPY --chown=1000:www-data ./src/ .
 ARG ENV
 RUN rm -rf html && ln -s public html \
-    && cp -vfa .env.$ENV .env \
     && rm -rf .env.*
 
 RUN composer install \
     && chown -R 1000:www-data vendor
 
 # Install supervisor
-RUN apk add supervisor
+#RUN apk add supervisor
 
 # Added supervisor config
-COPY ./docker/app/supervisor.conf /etc/supervisord.conf
+#COPY ./docker/app/supervisor.conf /etc/supervisord.conf
 
 RUN chown 1000:www-data .
 USER www-data

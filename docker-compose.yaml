@@ -45,7 +45,7 @@ services:
             - MYSQL_DATABASE=strider
             - MYSQL_ROOT_PASSWORD=root
         networks:
-            - app-networ
+            - app-network
 networks:
     app-network:
         driver: bridge

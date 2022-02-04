@@ -2,7 +2,7 @@
 
 echo "SETTING ENV"
 echo "==================="
-cp .env.local .env
+cp .env.example .env
 php artisan key:generate
 
 echo "RUNNING MIGRATION"
@@ -13,4 +13,6 @@ php artisan migrate
 #echo "==================="
 #php artisan l5-swagger:generate
 
-/usr/bin/supervisord -n -c /etc/supervisord.conf
+#/usr/bin/supervisord -n -c /etc/supervisord.conf
+
+php-fpm

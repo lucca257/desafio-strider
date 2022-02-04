@@ -1,7 +1,5 @@
 /docker/db/dbdata
 /docker/db/dbdata/*
-/src/.env
-/.env
 /src/.phpunit.result.cache
 /.phpunit.result.cache
 /.idea
