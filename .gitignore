@@ -1,0 +1,12 @@
+/docker/db/dbdata
+/docker/db/dbdata/*
+/src/vendor
+/src/.env
+/.env
+/src/.phpunit.result.cache
+/.phpunit.result.cache
+/.idea
+/Homestead.json
+/Homestead.yaml
+*.log
+*.pid

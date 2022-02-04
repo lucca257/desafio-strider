@@ -1,0 +1,51 @@
+version: '3'
+services:
+    app:
+        build:
+            context: .
+            dockerfile: ./docker/app/app.dockerfile
+            args:
+                - ENV=local
+        environment:
+            - ENV=local
+        entrypoint: bash -c "composer install && dockerize -wait tcp://db:3306 /docker/entrypoint.sh"
+        tty: true
+        volumes:
+            - ./src/:/var/www/
+        networks:
+            - app-network
+    web:
+        hostname: strider.localhost
+        build:
+            context: .
+            dockerfile: ./docker/web/web.dockerfile
+        restart: always
+        tty: true
+        ports:
+            - "80:80"
+        volumes_from:
+            - app
+        networks:
+            - app-network
+        depends_on:
+            - app
+    db:
+        build:
+            context: .
+            dockerfile: ./docker/db/db.dockerfile
+        command: --innodb-use-native-aio=0
+        restart: always
+        tty: true
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./docker/db/dbdata:/var/lib/mysql
+            - ./docker/db:/docker-entrypoint-initdb.d
+        environment:
+            - MYSQL_DATABASE=strider
+            - MYSQL_ROOT_PASSWORD=root
+        networks:
+            - app-networ
+networks:
+    app-network:
+        driver: bridge
