@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Console;
+namespace App\infra\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use function base_path;
 
 class Kernel extends ConsoleKernel
 {
