@@ -9,14 +9,36 @@ use Illuminate\Support\Str;
  */
 trait UuidTrait
 {
-    public static function bootUuidTrait()
+    /**
+     * Boot function from Laravel.
+     */
+    protected static function boot()
     {
+        parent::boot();
         static::creating(function ($model) {
-            $uid = $model->getKeyName();
-            if (!empty($model->$uid)) {
-                return;
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = Str::uuid()->toString();
             }
-            $model->$uid = Str::uuid();
         });
+    }
+
+    /**
+     * Get the value indicating whether the IDs are incrementing.
+     *
+     * @return bool
+     */
+    public function getIncrementing()
+    {
+        return false;
+    }
+
+    /**
+     * Get the auto-incrementing key type.
+     *
+     * @return string
+     */
+    public function getKeyType()
+    {
+        return 'string';
     }
 }
