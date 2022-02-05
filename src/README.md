@@ -1,64 +1,101 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Project Description
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Overview
 
-## About Laravel
+The Project Manager you work with wants to build a new product, a new social media application called Posterr. Posterr is very similar to Twitter, but it has far fewer features.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Posterr only has two pages, the homepage and the user profile page, which are described below. Other data and actions are also detailed below.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Pages
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Homepage**
 
-## Learning Laravel
+- The homepage, by default, will show a feed of all posts (including reposts and quote posts).
+- There is a toggle switch "All / following" that allows you to switch between seeing all posts and just posts by those you follow.
+- New posts can be written from this page.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**User profile page**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Shows data about the user:
+    - Username
+    - Date joined Posterr, formatted as such: "March 25, 2021"
+    - Number of followers
+    - Number following
+    - Count of number of posts the user has made (including reposts and quote posts)
+- Shows a feed of all posts the user has made (including reposts and quote posts)
+- Shows whether you follow the user or not
+- Follow/unfollow actions:
+    - You can follow the user by clicking "Follow" on their profile
+    - You can unfollow the user by clicking "Unfollow" on their profile
+- New posts can be written from this page
 
-## Laravel Sponsors
+### More Details
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+**Users**
 
-### Premium Partners
+- Only alphanumeric characters can be used for username
+- Maximum 14 characters for username
+- Do not build authentication
+- Do not build CRUD for users
+- When/if necessary to make your application function, you may hard-code the user. For example, you may need to do this to implement creating new posts, following, etc
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+**Posts**
 
-## Contributing
+Posts are the equivalent of Twitter's tweets. They are text only, user generated content. Users can write original posts and interact with other users' posts by reposting or quote-posting. For this project, you should implement all three — original posts, reposts, and quote-posting
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Users are not allowed to post more than 5 posts in one day (including reposts and quote posts)
+- Posts can have a maximum of 777 characters
+- Users cannot update or delete their posts
+- Reposting: Users can repost other users' posts (like Twitter Retweet)
+- Quote-post: Users can repost other user's posts and leave a comment along with it (like Twitter Quote Tweet)
 
-## Code of Conduct
+**Following**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Users should be able to follow other users
+- Users cannot follow themselves
+- Following and unfollowing will be done only on the user profile page
 
-## Security Vulnerabilities
+### Extra **feature: Search**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Only work on this extra feature if you have enough time to complete the required features and get through all three phases of the interview.
 
-## License
+- Implement a search feature that allows users to efficiently search through all posts
+- This search feature should not return reposts
+- This search feature should return quote posts, but only if the search matches the additional text added (do **not** return matches from the original post that was quoted on top of)
+- (For Phase 2) This search feature should return reply-to-posts
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Phase 1, coding
+
+Estimated time: 7 hours
+
+- Build out a RESTful API and corresponding backend system to handle the features detailed above. This RESTful API would communicate with single page JS app. This API you build should enable all the features on both of the pages.
+- You should implement a real, production-ready database, and queries should be performant.
+- Do not implement additional features beyond what is explained in the overview.
+- Write some automated tests for this project.
+- Do not build a front-end.
+
+## Phase 2, planning
+
+Estimated time: 30 minutes
+
+The Product Manager wants to implement a new feature called "reply-to-post" (it's a lot like Twitter's These are regular posts that use "@ mentioning" at the beginning to indicate that it is a reply directly to a post. Reply posts should only be shown in a new, secondary feed on the user profile called "Posts and Replies" where all original posts and reply posts are shown. They should not be shown in the homepage feed.
+
+What you need to do:
+
+- Write down questions you have for the Product Manager about implementation.
+- Write about how you would solve this problem in as much detail as possible. Write about all of the changes to database/front-end/api/etc that you expect. You should write down any assumptions you are making from any questions for the Product Manager that you previously mentioned.
+- **Be thorough!**
+
+This should be added as a section called "Planning" in the README.
+
+## Phase 3, self-critique & scaling
+
+Estimated time: 30 minutes
+
+In any project, it is always a challenge to get the code perfectly how you'd want it. Here is what you need to do for this section:
+
+- Reflect on this project, and write what you would improve if you had more time.
+- Write about scaling. If this project were to grow and have many users and posts, which parts do you think would fail first? In a real-life situation, what steps would you take to scale this product? What other types of technology and infrastructure might you need to use?
+- **Be thorough!**
+
+This should be added as a section called "Critique" in the README.
