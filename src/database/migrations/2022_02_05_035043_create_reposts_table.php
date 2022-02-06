@@ -17,6 +17,9 @@ class CreateRepostsTable extends Migration
     {
         Schema::create('reposts', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->constrained('users');
+            $table->foreignUuid('post_id')->constrained('posts');
+            $table->string('content', 777);
             $table->timestamps();
         });
     }
