@@ -25,4 +25,16 @@ class PostApiTest extends TestCase
         $response->assertStatus(200);
         $this->assertEquals($totalPosts, count($response->json()));
     }
+
+    public function test_should_list_all_user_posts_and_reposts()
+    {
+        $user = User::factory()->create();
+        Auth::setUser($user);
+        $post = Post::factory()->count(2)->create(['user_id' => $user->id]);
+        $repost = Repost::factory()->count(2)->create(['user_id' => $user->id]);
+        $totalPosts = $post->count() + $repost->count();
+        $response = $this->get('api/post?filter=user');
+        $response->assertStatus(200);
+        $this->assertEquals($totalPosts, count($response->json()));
+    }
 }
