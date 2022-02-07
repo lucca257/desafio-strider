@@ -16,11 +16,15 @@ class PostApiController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $reposts = Repost::with('user','post','post.user')->get();
-        $posts = $reposts->pluck('post')->toArray();
-        $allPosts = array_merge($reposts->toArray(), $posts);
+        $posts = Post::with('user','repost','repost.user');
+        if($request->filter === "user"){
+            $posts->whereUserId(Auth::user()->id);
+        }
+        $posts = $posts->get();
+        $reposts = $posts->pluck('repost')->toArray();
+        $allPosts = array_merge($reposts, $posts->toArray());
         return response($allPosts);
     }
 
