@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'post'], function () {
     Route::get('', [\App\Application\Api\Post\PostApiController::class, 'index']);
+    Route::get('/reply', [\App\Application\Api\Post\PostApiController::class, 'replyPosts']);
 });

@@ -4,6 +4,7 @@ namespace App\Application\Api\Post;
 
 use App\Domain\Post\model\Post;
 use App\Domain\Post\model\QuotePost;
+use App\Domain\Post\model\ReplyPost;
 use App\Domain\Post\model\Repost;
 use App\Domain\User\models\Follows;
 use App\Domain\User\models\User;
@@ -41,6 +42,11 @@ class PostApiController extends Controller
         $allPosts = $allPosts->merge($posts);
         $allPosts = $allPosts->merge($reposts);
         return $allPosts->merge($quotePosts);
+    }
+
+    public function replyPosts()
+    {
+        return ReplyPost::whereUserId(Auth::user()->id)->with('post.user')->get();
     }
 
     /**

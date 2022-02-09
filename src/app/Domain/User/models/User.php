@@ -4,6 +4,7 @@ namespace App\Domain\User\models;
 
 use App\Domain\Post\model\Post;
 use App\Domain\Post\model\QuotePost;
+use App\Domain\Post\model\ReplyPost;
 use App\Domain\Post\model\Repost;
 use App\Support\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -40,9 +41,9 @@ class User extends Authenticatable
         return $this->hasMany(QuotePost::class);
     }
 
-    public function postFollowers()
+    public function replyPosts()
     {
-
+        return $this->hasMany(ReplyPost::class);
     }
 
     /**
