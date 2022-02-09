@@ -27,8 +27,6 @@ class PostApiController extends Controller
         $quotePosts = QuotePost::with('user', 'post.user');
 
         if($request->filter === "follows"){
-            $user = User::all()->random();
-            Auth::setUser($user);
             $filter = Follows::where('follower_id', Auth::user()->id)->pluck('followered_id');
             $posts = $posts->whereIn('user_id', $filter);
             $reposts = $reposts->whereIn('user_id', $filter);
