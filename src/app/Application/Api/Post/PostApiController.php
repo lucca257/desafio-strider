@@ -20,11 +20,20 @@ class PostApiController extends Controller
      *
      * @return Collection
      */
-    public function index(Request $request) : Collection
+    public function index(Request $request): Collection
     {
         $posts = Post::with('user');
         $reposts = Repost::with('user', 'post.user');
         $quotePosts = QuotePost::with('user', 'post.user');
+
+        if($request->filter === "follows"){
+            $user = User::all()->random();
+            Auth::setUser($user);
+            $filter = Follows::where('follower_id', Auth::user()->id)->pluck('followered_id');
+            $posts = $posts->whereIn('user_id', $filter);
+            $reposts = $reposts->whereIn('user_id', $filter);
+            $quoteposts = $quotePosts->whereIn('user_id', $filter);
+        }
 
         $posts = $posts->get();
         $reposts = $reposts->get();
