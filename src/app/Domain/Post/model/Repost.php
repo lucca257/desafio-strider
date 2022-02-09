@@ -3,12 +3,13 @@
 namespace App\Domain\Post\model;
 
 use App\Domain\User\models\User;
+use App\Support\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Repost extends Model
 {
-    use HasFactory;
+    use HasFactory, UuidTrait;
 
     protected $guarded = [];
 

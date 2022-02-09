@@ -3,8 +3,11 @@
 namespace App\Domain\User\models;
 
 use App\Domain\Post\model\Post;
+use App\Domain\Post\model\QuotePost;
+use App\Domain\Post\model\Repost;
 use App\Support\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -13,18 +16,34 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, UuidTrait;
 
-    public function posts()
+    /**
+     * @return HasMany
+     */
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
 
-    public function reposts()
+    /**
+     * @return HasMany
+     */
+    public function reposts(): HasMany
+    {
+        return $this->hasMany(Repost::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function quotePosts(): HasMany
+    {
+        return $this->hasMany(QuotePost::class);
+    }
+
+    public function postFollowers()
     {
 
     }
-
-    public function quoteReposts()
-    {}
 
     /**
      * The attributes that are mass assignable.

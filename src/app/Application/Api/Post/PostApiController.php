@@ -3,8 +3,12 @@
 namespace App\Application\Api\Post;
 
 use App\Domain\Post\model\Post;
+use App\Domain\Post\model\QuotePost;
 use App\Domain\Post\model\Repost;
+use App\Domain\User\models\Follows;
+use App\Domain\User\models\User;
 use App\infra\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -14,18 +18,22 @@ class PostApiController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return Collection
      */
-    public function index(Request $request)
+    public function index(Request $request) : Collection
     {
-        $posts = Post::with('user','repost','repost.user');
-        if($request->filter === "user"){
-            $posts->whereUserId(Auth::user()->id);
-        }
+        $posts = Post::with('user');
+        $reposts = Repost::with('user', 'post.user');
+        $quotePosts = QuotePost::with('user', 'post.user');
+
         $posts = $posts->get();
-        $reposts = $posts->pluck('repost')->toArray();
-        $allPosts = array_merge($reposts, $posts->toArray());
-        return response($allPosts);
+        $reposts = $reposts->get();
+        $quoteposts = $quotePosts->get();
+
+        $allPosts = new Collection;
+        $allPosts = $allPosts->merge($posts);
+        $allPosts = $allPosts->merge($reposts);
+        return $allPosts->merge($quoteposts);
     }
 
     /**

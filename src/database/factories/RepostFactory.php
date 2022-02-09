@@ -18,10 +18,8 @@ class RepostFactory extends Factory
     public function definition()
     {
         return [
-            "id" => $this->faker->uuid,
             "user_id" => User::all()->random()->id,
             "post_id" => Post::all()->random()->id,
-            "content" => $this->faker->realText
         ];
     }
 }

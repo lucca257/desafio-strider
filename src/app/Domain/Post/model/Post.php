@@ -15,11 +15,16 @@ class Post extends Model
 
     public function repost()
     {
-        return $this->hasOne(Repost::class);
+        return $this->hasMany(Repost::class);
     }
 
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function quotePosts()
+    {
+        return $this->hasMany(QuotePost::class);
     }
 }
