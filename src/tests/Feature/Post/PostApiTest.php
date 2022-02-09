@@ -4,6 +4,7 @@ namespace Tests\Feature\Post;
 
 use App\Domain\Post\model\Post;
 use App\Domain\Post\model\QuotePost;
+use App\Domain\Post\model\ReplyPost;
 use App\Domain\Post\model\Repost;
 use App\Domain\User\models\Follows;
 use App\Domain\User\models\User;
@@ -52,5 +53,19 @@ class PostApiTest extends TestCase
         $response = $this->get('api/post?filter=follows');
         $response->assertStatus(200);
         $this->assertEquals($totalPosts, count($response->json()));
+    }
+
+    public function test_should_list_all_user_reply_posts()
+    {
+        $users = User::factory()
+            ->count(4)
+            ->has( Post::factory()->count(3) )
+            ->has( ReplyPost::factory()->count(2) )
+            ->create();
+        $user = User::whereId($users->random()->id)->withCount(['replyPosts'])->first();
+        Auth::setUser($user);
+        $response = $this->get('api/post/reply');
+        $response->assertStatus(200);
+        $this->assertEquals($user->reply_posts_count, count($response->json()));
     }
 }
