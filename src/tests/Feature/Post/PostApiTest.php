@@ -18,12 +18,16 @@ class PostApiTest extends TestCase
 
     public function test_should_list_all_posts_reposts_and_quote_posts()
     {
+        $totalPosts = 0;
         $users = User::factory()
             ->count(4)
             ->has( Post::factory()->count(2) )
             ->has( Repost::factory()->count(2) )
             ->has( QuotePost::factory()->count(1) )
             ->create();
+        $users->each(function($user) use ($totalPosts) {
+            $totalPosts += $user->posts_count + $user->reposts_count + $user->quote_posts_count;;
+        });
         $totalPosts = $users->count() * 5;
         $response = $this->get('api/post');
         $response->assertStatus(200);

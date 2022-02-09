@@ -32,17 +32,17 @@ class PostApiController extends Controller
             $filter = Follows::where('follower_id', Auth::user()->id)->pluck('followered_id');
             $posts = $posts->whereIn('user_id', $filter);
             $reposts = $reposts->whereIn('user_id', $filter);
-            $quoteposts = $quotePosts->whereIn('user_id', $filter);
+            $quotePosts = $quotePosts->whereIn('user_id', $filter);
         }
 
         $posts = $posts->get();
         $reposts = $reposts->get();
-        $quoteposts = $quotePosts->get();
+        $quotePosts = $quotePosts->get();
 
         $allPosts = new Collection;
         $allPosts = $allPosts->merge($posts);
         $allPosts = $allPosts->merge($reposts);
-        return $allPosts->merge($quoteposts);
+        return $allPosts->merge($quotePosts);
     }
 
     /**
