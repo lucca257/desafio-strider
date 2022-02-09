@@ -29,4 +29,24 @@ class PostApiTest extends TestCase
         $response->assertStatus(200);
         $this->assertEquals($totalPosts, count($response->json()));
     }
+
+    public function test_should_list_all_followed_posts()
+    {
+        $users = User::factory()
+            ->count(4)
+            ->has( Post::factory()->count(2) )
+            ->has( Repost::factory()->count(2) )
+            ->has( QuotePost::factory()->count(1) )
+            ->create();
+        $users->each(function($u) {
+            Follows::factory()->create(['follower_id' => $u->id]);
+        });
+        $mock_user = $users->random();
+        $followed_user = User::whereId($mock_user->id)->withCount(['posts', 'reposts', 'quotePosts'])->first();
+        Auth::setUser($mock_user);
+        $totalPosts = $followed_user->posts_count + $followed_user->reposts_count + $followed_user->quote_posts_count;
+        $response = $this->get('api/post?filter=follows');
+        $response->assertStatus(200);
+        $this->assertEquals($totalPosts, count($response->json()));
+    }
 }
