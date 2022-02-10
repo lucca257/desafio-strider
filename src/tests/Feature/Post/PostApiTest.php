@@ -93,4 +93,16 @@ class PostApiTest extends TestCase
                 "content" => ["The content field is required."]
             ]);
     }
+
+
+    public function test_shouldnt_create_user_post(){
+        Auth::setUser(User::factory()->create());
+        $this->setUpFaker();
+        $mock_data = [
+            "content" => $this->faker->realText(775)
+        ];
+        $response = $this->post('api/post',$mock_data);
+        $response->assertStatus(201);
+        $this->assertDatabaseHas('posts', $mock_data);
+    }
 }
