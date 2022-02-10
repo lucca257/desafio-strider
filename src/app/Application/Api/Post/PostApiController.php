@@ -44,20 +44,24 @@ class PostApiController extends Controller
         return $allPosts->merge($quotePosts);
     }
 
+    /**
+     * @return mixed
+     */
     public function replyPosts()
     {
         return ReplyPost::whereUserId(Auth::user()->id)->with('post.user')->get();
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return Response
+     * @param PostApiRequestValidator $request
+     * @return mixed
      */
-    public function store(Request $request)
+    public function store(PostApiRequestValidator $request)
     {
-        //
+        return Post::create([
+            "user_id" => Auth::user()->id,
+            ...$request->validated()
+        ]);
     }
 
     /**
