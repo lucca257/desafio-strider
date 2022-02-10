@@ -16,30 +16,5 @@ use function dd;
 
 class PostTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
 
-    public function test_shouldnt_post_content_with_more_than_777_characters(){
-        Auth::setUser(User::factory()->create());
-        $this->setUpFaker();
-        $mock_data = [
-            "content" => $this->faker->realText(989)
-        ];
-        $response = $this->post('api/post',$mock_data);
-        $response
-            ->assertStatus(422)
-            ->assertJson([
-                "content" => ["The content must not be greater than 777 characters."]
-            ]);
-    }
-
-    public function test_shouldnt_create_post_without_content(){
-        Auth::setUser(User::factory()->create());
-        $this->setUpFaker();
-        $response = $this->post('api/post');
-        $response
-            ->assertStatus(422)
-            ->assertJson([
-                "content" => ["The content field is required."]
-            ]);
-    }
 }

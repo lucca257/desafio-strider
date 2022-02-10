@@ -9,13 +9,13 @@ use App\Domain\Post\model\Repost;
 use App\Domain\User\models\Follows;
 use App\Domain\User\models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
-use function dd;
 
 class PostApiTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, WithFaker;
 
     public function test_should_list_all_posts_reposts_and_quote_posts()
     {
@@ -67,5 +67,30 @@ class PostApiTest extends TestCase
         $response = $this->get('api/post/reply');
         $response->assertStatus(200);
         $this->assertEquals($user->reply_posts_count, count($response->json()));
+    }
+
+    public function test_shouldnt_post_content_with_more_than_777_characters(){
+        Auth::setUser(User::factory()->create());
+        $this->setUpFaker();
+        $mock_data = [
+            "content" => $this->faker->realText(989)
+        ];
+        $response = $this->post('api/post',$mock_data);
+        $response
+            ->assertStatus(422)
+            ->assertJson([
+                "content" => ["The content must not be greater than 777 characters."]
+            ]);
+    }
+
+    public function test_shouldnt_create_post_without_content(){
+        Auth::setUser(User::factory()->create());
+        $this->setUpFaker();
+        $response = $this->post('api/post');
+        $response
+            ->assertStatus(422)
+            ->assertJson([
+                "content" => ["The content field is required."]
+            ]);
     }
 }
