@@ -6,6 +6,7 @@ use App\Domain\Post\model\Post;
 use App\Domain\Post\model\QuotePost;
 use App\Domain\Post\model\ReplyPost;
 use App\Domain\Post\model\Repost;
+use App\Domain\Post\repository\PostRepository;
 use App\Domain\User\actions\UserCantPostAction;
 use App\Domain\User\Exceptions\UserExceedTotalPostsError;
 use App\Domain\User\models\Follows;
@@ -23,27 +24,13 @@ class PostApiController extends Controller
      *
      * @return Collection
      */
-    public function index(Request $request): Collection
+    public function index(Request $request, PostRepository $postRepository): Collection
     {
-        $posts = Post::with('user');
-        $reposts = Repost::with('user', 'post.user');
-        $quotePosts = QuotePost::with('user', 'post.user');
-
+        $user_id = null;
         if($request->filter === "follows"){
-            $filter = Follows::where('follower_id', Auth::user()->id)->pluck('followered_id');
-            $posts = $posts->whereIn('user_id', $filter);
-            $reposts = $reposts->whereIn('user_id', $filter);
-            $quotePosts = $quotePosts->whereIn('user_id', $filter);
+            $user_id = Follows::where('follower_id', Auth::user()->id)->pluck('followered_id');
         }
-
-        $posts = $posts->get();
-        $reposts = $reposts->get();
-        $quotePosts = $quotePosts->get();
-
-        $allPosts = new Collection;
-        $allPosts = $allPosts->merge($posts);
-        $allPosts = $allPosts->merge($reposts);
-        return $allPosts->merge($quotePosts);
+        return $postRepository->allPosts($user_id);
     }
 
     /**
