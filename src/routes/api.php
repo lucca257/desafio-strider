@@ -26,4 +26,5 @@ Route::controller(\App\Application\Api\Post\PostApiController::class)->prefix('p
 
 Route::controller(\App\Application\Api\User\UserApiController::class)->prefix('user')->group(function (){
     Route::get('{user}', 'show');
+    Route::post('follow/{followered_id}', 'follow');
 });

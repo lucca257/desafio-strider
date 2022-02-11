@@ -2,13 +2,15 @@
 
 namespace App\Domain\User\repository;
 
+use App\Domain\User\models\Follows;
 use App\Domain\User\models\User;
 use Carbon\Carbon;
 
 class UserRepository
 {
     public function __construct(
-        public User $user
+        public User $user,
+        public Follows $follow
     ){}
 
     public function totalPostsInDay(string $user_id): int
@@ -39,5 +41,18 @@ class UserRepository
                 ...$relationships
             ])
             ->find($user_id);
+    }
+
+    /**
+     * @param string $follower_id
+     * @param string $followered_id
+     * @return mixed
+     */
+    public function follow(string $follower_id, string $followered_id): mixed
+    {
+        return $this->follow->create([
+            "follower_id" => $follower_id,
+            "followered_id" => $followered_id
+        ]);
     }
 }
