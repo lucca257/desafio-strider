@@ -107,9 +107,10 @@ class QuotePostApiTest extends TestCase
             "user_id" => $users->first()->id
         ]);
         $mock_data = [
+            "content" => $this->faker->realText(770),
             "post_id" => $post->id
         ];
-        $response = $this->post('api/repost',$mock_data);
+        $response = $this->post('api/quotepost',$mock_data);
         $response
             ->assertStatus(422)
             ->assertJson([
