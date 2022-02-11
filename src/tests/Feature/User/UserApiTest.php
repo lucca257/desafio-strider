@@ -31,6 +31,18 @@ class UserApiTest extends TestCase
         });
         $response = $this->get("api/user/{$users->random()->id}");
         $response->assertStatus(200);
-        //$this->assertDatabaseHas('users', $mock_user);
+    }
+
+    public function test_user_should_follow_some_one()
+    {
+        $follower = User::factory()->create();
+        $followered =User::factory()->create();
+        Auth::setUser($follower);
+        $response = $this->post("api/user/follow/{$followered->id}");
+        $response->assertStatus(201)
+            ->assertJsonFragment([
+                "follower_id" => $follower->id,
+                "followered_id" => $followered->id
+            ]);
     }
 }
