@@ -117,4 +117,23 @@ class QuotePostApiTest extends TestCase
                 "message" => "Whoops, did you exceed the total posts. You can post only 5 posts in a day."
             ]);
     }
+
+    public function test_should_create_quote_post(){
+        $users = User::factory()->count(2)->create();
+        Auth::setUser($users->last());
+        $post = Post::factory()->create([
+            "user_id" => $users->first()->id
+        ]);
+        $mock_data = [
+            "post_id" => $post->id,
+            "content" => $this->faker->realText(770),
+        ];
+        $response = $this->post('api/quotepost',$mock_data);
+        $response
+            ->assertStatus(201)
+            ->assertJsonFragment([
+                "user_id" => $users->last()->id,
+                ...$mock_data
+            ]);
+    }
 }
