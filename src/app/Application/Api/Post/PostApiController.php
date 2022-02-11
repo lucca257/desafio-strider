@@ -6,6 +6,8 @@ use App\Domain\Post\model\Post;
 use App\Domain\Post\model\QuotePost;
 use App\Domain\Post\model\ReplyPost;
 use App\Domain\Post\model\Repost;
+use App\Domain\User\actions\UserCantPostAction;
+use App\Domain\User\Exceptions\UserExceedTotalPostsError;
 use App\Domain\User\models\Follows;
 use App\Domain\User\models\User;
 use App\infra\Http\Controllers\Controller;
@@ -55,11 +57,16 @@ class PostApiController extends Controller
     /**
      * @param PostApiRequestValidator $request
      * @return mixed
+     * @throws UserExceedTotalPostsError
      */
-    public function store(PostApiRequestValidator $request)
+    public function store(PostApiRequestValidator $request, UserCantPostAction $userCanPost)
     {
+        $user = Auth::user();
+        if($userCanPost->execute($user->id)){
+            throw new UserExceedTotalPostsError();
+        }
         return Post::create([
-            "user_id" => Auth::user()->id,
+            "user_id" => $user->id,
             ...$request->validated()
         ]);
     }
