@@ -32,4 +32,21 @@ class ReplyPostApiTest extends TestCase
             "post_id" => $post->id
         ]);
     }
+
+    public function test_should_not_create_reply_post_when_user_was_not_mentioned_in_post_content(){
+        $mention_user = User::factory()->create(["username" => 'mention_user']);
+        $user = User::factory()->create(["username" => 'any_user']);
+        $post = Post::factory()->create(["user_id" => $user->id]);
+        Auth::setUser($user);
+        $mock_data = [
+            "post_id" => $post->id,
+            "content" => $this->faker->realText(700),
+        ];
+        $response = $this->post('api/quotepost',$mock_data);
+        $response->assertStatus(201);
+        $this->assertDatabaseMissing('reply_posts', [
+            "user_id" => $mention_user->id,
+            "post_id" => $post->id
+        ]);
+    }
 }
