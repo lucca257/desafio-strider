@@ -2,6 +2,7 @@
 
 namespace App\Application\Api\Post;
 
+use App\Application\Api\Post\Validators\PostApiRequestValidator;
 use App\Domain\Post\model\Post;
 use App\Domain\Post\model\ReplyPost;
 use App\Domain\Post\repository\PostRepository;

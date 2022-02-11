@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Application\Api\Post;
+namespace App\Application\Api\Post\Validators;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use function response;
 
-class CreateRepostValidator extends FormRequest
+class PostApiRequestValidator extends FormRequest
 {
     /**
      * Disable validator redirect back to use in API
@@ -34,7 +35,7 @@ class CreateRepostValidator extends FormRequest
     public function rules()
     {
         return [
-            "post_id" => "required|exists:posts,id"
+            "content" => "required|max:777",
         ];
     }
 }
