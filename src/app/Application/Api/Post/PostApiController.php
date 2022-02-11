@@ -3,14 +3,11 @@
 namespace App\Application\Api\Post;
 
 use App\Domain\Post\model\Post;
-use App\Domain\Post\model\QuotePost;
 use App\Domain\Post\model\ReplyPost;
-use App\Domain\Post\model\Repost;
 use App\Domain\Post\repository\PostRepository;
 use App\Domain\User\actions\UserCantPostAction;
 use App\Domain\User\Exceptions\UserExceedTotalPostsError;
 use App\Domain\User\models\Follows;
-use App\Domain\User\models\User;
 use App\infra\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -20,8 +17,8 @@ use Illuminate\Support\Facades\Auth;
 class PostApiController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
+     * @param Request $request
+     * @param PostRepository $postRepository
      * @return Collection
      */
     public function index(Request $request, PostRepository $postRepository): Collection
@@ -43,6 +40,7 @@ class PostApiController extends Controller
 
     /**
      * @param PostApiRequestValidator $request
+     * @param UserCantPostAction $userCanPost
      * @return mixed
      * @throws UserExceedTotalPostsError
      */

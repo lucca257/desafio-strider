@@ -17,15 +17,10 @@ class FollowsFactory extends Factory
     public function definition()
     {
         $users = User::all();
-//        $seletec_user = $this->faker->randomElement($users);
-//        $follows = Follows::whereNotIn('followered_id')->pluck('follower_id');
-//        $users = User::whereNotIn('id', $follows)->pluck('id')->toArray();
-//        $sorted_user = $this->faker->randomElement($users);
- //       unset($users[array_search($sorted_user, $users)]);
 
         return [
             "follower_id" => $this->faker->randomElement($users),
-            "followered_id" => $this->faker->unique()->randomElement($users),
+            "followered_id" => $this->faker->randomElement($users),
         ];
     }
 }

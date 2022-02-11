@@ -10,7 +10,7 @@ class UserCantPostAction
 
     public function execute(string $user_id): bool
     {
-        $total_posts = $this->repository->totalPosts($user_id);
+        $total_posts = $this->repository->totalPostsInDay($user_id);
         return $total_posts >= 6;
     }
 }

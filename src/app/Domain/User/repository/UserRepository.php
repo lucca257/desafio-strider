@@ -11,7 +11,7 @@ class UserRepository
         public User $user
     ){}
 
-    public function totalPosts(string $user_id): int
+    public function totalPostsInDay(string $user_id): int
     {
         $date = new Carbon();
         $user = $this->user->withCount([
@@ -26,5 +26,18 @@ class UserRepository
             }
         ])->find($user_id);
         return $user->posts_count + $user->reposts_count + $user->quote_posts_count;
+    }
+
+    public function details(string $user_id): \Illuminate\Database\Eloquent\Builder|array|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+    {
+        $relationships = ['posts', 'reposts', 'quotePosts', 'replyPosts'];
+        return $this->user
+            ->with($relationships)
+            ->withCount([
+                'followers',
+                'followereds',
+                ...$relationships
+            ])
+            ->find($user_id);
     }
 }

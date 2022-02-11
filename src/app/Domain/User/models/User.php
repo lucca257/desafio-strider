@@ -41,9 +41,19 @@ class User extends Authenticatable
         return $this->hasMany(QuotePost::class);
     }
 
-    public function replyPosts()
+    public function replyPosts(): HasMany
     {
         return $this->hasMany(ReplyPost::class);
+    }
+
+    public function followers(): HasMany
+    {
+        return $this->hasMany(Follows::class, 'follower_id','id');
+    }
+
+    public function followereds(): HasMany
+    {
+        return $this->hasMany(Follows::class, 'followered_id','id');
     }
 
     /**

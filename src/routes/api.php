@@ -18,9 +18,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::controller(\App\Application\Api\Post\PostApiController::class)->prefix('post')->group(function () {
+    Route::get('', 'index');
+    Route::post('', 'store');
+    Route::get('/reply', 'replyPosts');
+});
 
-Route::group(['prefix' => 'post'], function () {
-    Route::get('', [\App\Application\Api\Post\PostApiController::class, 'index']);
-    Route::post('', [\App\Application\Api\Post\PostApiController::class, 'store']);
-    Route::get('/reply', [\App\Application\Api\Post\PostApiController::class, 'replyPosts']);
+Route::controller(\App\Application\Api\User\UserApiController::class)->prefix('user')->group(function (){
+    Route::get('{user}', 'show');
 });
