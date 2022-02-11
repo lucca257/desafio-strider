@@ -115,4 +115,25 @@ class RepostApiTest extends TestCase
                 "message" => "Whoops, did you exceed the total posts. You can post only 5 posts in a day."
             ]);
     }
+
+    public function test_should_create_a_repost(){
+        $users = User::factory()->count(2)
+            ->has( Post::factory()->count(2) )
+            ->has( Repost::factory()->count(2) )
+            ->create();
+        Auth::setUser($users->last());
+        $post = Post::factory()->create([
+            "user_id" => $users->first()->id
+        ]);
+        $mock_data = [
+            "post_id" => $post->id
+        ];
+        $response = $this->post('api/repost',$mock_data);
+        $response
+            ->assertStatus(201)
+            ->assertJsonFragment([
+                "post_id" => $post->id,
+                "user_id" => $users->last()->id
+            ]);
+    }
 }
