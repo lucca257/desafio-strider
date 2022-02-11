@@ -94,8 +94,7 @@ class PostApiTest extends TestCase
             ]);
     }
 
-
-    public function test_shouldnt_create_user_post(){
+    public function test_should_create_user_post(){
         Auth::setUser(User::factory()->create());
         $this->setUpFaker();
         $mock_data = [
@@ -104,5 +103,24 @@ class PostApiTest extends TestCase
         $response = $this->post('api/post',$mock_data);
         $response->assertStatus(201);
         $this->assertDatabaseHas('posts', $mock_data);
+    }
+
+    public function test_shouldnt_create_user_post_when_have_more_than_five_posts_in_a_day()
+    {
+        $user = User::factory()
+            ->has( Post::factory()->count(2) )
+            ->has( Repost::factory()->count(2) )
+            ->has( QuotePost::factory()->count(2) )
+            ->create();
+        Auth::setUser($user);
+        $mock_data = [
+            "content" => $this->faker->realText(775)
+        ];
+        $response = $this->post('api/post',$mock_data);
+        $response
+            ->assertStatus(422)
+            ->assertJson([
+                "message" => "Whoops, did you exceed the total posts. You can post only 5 posts in a day."
+            ]);
     }
 }
