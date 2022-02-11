@@ -24,6 +24,11 @@ Route::controller(\App\Application\Api\Post\PostApiController::class)->prefix('p
     Route::get('/reply', 'replyPosts');
 });
 
+Route::controller(\App\Application\Api\Post\RepostApiController::class)->prefix('repost')->group(function (){
+    Route::post('', 'store');
+});
+
+
 Route::controller(\App\Application\Api\User\UserApiController::class)->prefix('user')->group(function (){
     Route::get('{user}', 'show');
     Route::post('follow/{followered_id}', 'follow');
