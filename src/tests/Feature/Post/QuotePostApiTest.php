@@ -52,4 +52,24 @@ class QuotePostApiTest extends TestCase
                 "content" => ["The content must not be greater than 777 characters."]
             ]);
     }
+
+    public function test_post_id_field_is_required_on_create_quote_post()
+    {
+        $users = User::factory()
+            ->count(2)
+            ->create();
+        $post = Post::factory()->create([
+            "user_id" => $users->first()->id
+        ]);
+        Auth::setUser($users->last());
+        $mock_data = [
+            "content" => $this->faker->realText(770),
+        ];
+        $response = $this->post('api/quotepost',$mock_data);
+        $response
+            ->assertStatus(422)
+            ->assertJson([
+                "post_id" => ["The post id field is required."]
+            ]);
+    }
 }
