@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,25 +15,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::controller(\App\Application\Api\Post\PostApiController::class)->prefix('post')->group(function () {
+Route::controller(\App\Application\Api\Post\PostApiController::class)->middleware('mockUser')->prefix('post')->group(function () {
     Route::get('', 'index');
     Route::post('', 'store');
     Route::get('/reply', 'replyPosts');
 });
 
-Route::controller(\App\Application\Api\Post\RepostApiController::class)->prefix('repost')->group(function (){
+Route::controller(\App\Application\Api\Post\RepostApiController::class)->middleware('mockUser')->prefix('repost')->group(function (){
     Route::post('', 'store');
 });
 
-Route::controller(\App\Application\Api\Post\QuotePostApiController::class)->prefix('quotepost')->group(function (){
+Route::controller(\App\Application\Api\Post\QuotePostApiController::class)->middleware('mockUser')->prefix('quotepost')->group(function (){
     Route::post('', 'store');
 });
 
-Route::controller(\App\Application\Api\User\UserApiController::class)->prefix('user')->group(function (){
+Route::controller(\App\Application\Api\User\UserApiController::class)->middleware('mockUser')->prefix('user')->group(function (){
     Route::get('{user}', 'show');
     Route::post('follow/{followered_id}', 'follow');
 });
