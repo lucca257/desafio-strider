@@ -28,6 +28,9 @@ Route::controller(\App\Application\Api\Post\RepostApiController::class)->prefix(
     Route::post('', 'store');
 });
 
+Route::controller(\App\Application\Api\Post\QuotePostApiController::class)->prefix('quotepost')->group(function (){
+    Route::post('', 'store');
+});
 
 Route::controller(\App\Application\Api\User\UserApiController::class)->prefix('user')->group(function (){
     Route::get('{user}', 'show');
