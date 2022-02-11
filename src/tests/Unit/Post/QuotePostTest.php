@@ -23,4 +23,11 @@ class QuotePostTest extends TestCase
             "another_user"
         ],$matches);
     }
+
+    public function test_shouldnt_identify_mentioned_user_in_post_content()
+    {
+        $content = $this->faker->text(777);
+        $matches = (new IndentifyUserMentionAction())->execute($content);
+        $this->assertEquals(false,$matches);
+    }
 }
