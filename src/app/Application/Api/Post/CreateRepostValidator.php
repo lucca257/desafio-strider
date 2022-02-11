@@ -34,8 +34,7 @@ class CreateRepostValidator extends FormRequest
     public function rules()
     {
         return [
-            "content" => "required|max:777",
-            "post" => "required|max:777",
+            "post_id" => "required|exists"
         ];
     }
 }

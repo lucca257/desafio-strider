@@ -18,12 +18,12 @@ use Illuminate\Support\Facades\Auth;
 class RepostApiController extends Controller
 {
     /**
-     * @param PostApiRequestValidator $request
+     * @param CreateRepostValidator $request
      * @param UserCantPostAction $userCanPost
      * @return mixed
      * @throws UserExceedTotalPostsError
      */
-    public function store(PostApiRequestValidator $request, UserCantPostAction $userCanPost): mixed
+    public function store(CreateRepostValidator $request, UserCantPostAction $userCanPost): mixed
     {
         $user = Auth::user();
         if($userCanPost->execute($user->id)){
