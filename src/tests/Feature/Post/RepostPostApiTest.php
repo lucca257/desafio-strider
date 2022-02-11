@@ -23,7 +23,6 @@ class RepostApiTest extends TestCase
         ]);
         Auth::setUser($users->last());
         $mock_data = [
-            //"content" => $this->faker->realText(775),
             "post_id" => $post->id
         ];
         $response = $this->post('api/repost',$mock_data);
@@ -31,6 +30,26 @@ class RepostApiTest extends TestCase
             ->assertStatus(422)
             ->assertJson([
                 "content" => ["The content field is required."]
+            ]);
+    }
+
+    public function test_shouldnt_repost_content_greater_than_777_characters(){
+        $users = User::factory()
+            ->count(2)
+            ->create();
+        $post = Post::factory()->create([
+            "user_id" => $users->first()->id
+        ]);
+        Auth::setUser($users->last());
+        $mock_data = [
+            "content" => $this->faker->realText(999),
+            "post_id" => $post->id
+        ];
+        $response = $this->post('api/repost',$mock_data);
+        $response
+            ->assertStatus(422)
+            ->assertJson([
+                "content" => ["The content must not be greater than 777 characters."]
             ]);
     }
 }
