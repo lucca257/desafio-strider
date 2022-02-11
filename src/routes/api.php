@@ -28,7 +28,7 @@ Route::controller(\App\Application\Api\Post\RepostApiController::class)->prefix(
     Route::post('', 'store');
 });
 
-Route::controller(\App\Application\Api\Post\QuotePostApiController::class)->prefix('quotepost')->group(function (){
+Route::controller(\App\Application\Api\Post\ReplyPostApiController::class)->prefix('replypost')->group(function (){
     Route::post('', 'store');
 });
 
