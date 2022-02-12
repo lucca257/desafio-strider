@@ -31,6 +31,6 @@ Route::controller(\App\Application\Api\Post\QuotePostApiController::class)->midd
 });
 
 Route::controller(\App\Application\Api\User\UserApiController::class)->middleware('mockUser')->prefix('user')->group(function (){
-    Route::get('{user}', 'show');
-    Route::post('follow/{followered_id}', 'follow');
+    Route::get('{user?}', 'show');
+    Route::post('follow/{followered_id?}', 'follow');
 });
