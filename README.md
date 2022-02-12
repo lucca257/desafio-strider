@@ -17,7 +17,7 @@ docker-compose up
 this challenge was developed in TDD, so if you like to see all the tests you can run:
 
 ```bash
-docker-compose exec desafio-strider_app_1 bash -c "php artisan test"
+docker-compose exec strider-app bash -c "php artisan test"
 ```
 ### Documents
 
@@ -28,6 +28,18 @@ docker-compose exec desafio-strider_app_1 bash -c "php artisan test"
 I tried use swagger but how i change the usual structure i had some problems.
 
 Please, install insomina and import thease file inside folder docs, named insomnia.json
+
+### What i have done ?
+
+- [x] list all posts
+- [x] list following posts
+- [x] user details
+- [x] follow/unfollow users
+- [x] create post
+- [x] create quote-post
+- [x] create repost
+- [x] create reply to post
+- [x] search posts by content
 
 # notes
 
