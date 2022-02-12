@@ -10,6 +10,7 @@ use App\Domain\User\actions\UserCantPostAction;
 use App\Domain\User\Exceptions\UserExceedTotalPostsError;
 use App\Domain\User\models\Follows;
 use App\infra\Http\Controllers\Controller;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -21,8 +22,9 @@ class PostApiController extends Controller
      * @param Request $request
      * @param PostRepository $postRepository
      * @return Collection
+     * @throws BindingResolutionException
      */
-    public function index(Request $request, PostRepository $postRepository): Collection
+    public function index(Request $request, PostRepository $postRepository)
     {
         $user_id = null;
         if($request->filter === "follows"){
