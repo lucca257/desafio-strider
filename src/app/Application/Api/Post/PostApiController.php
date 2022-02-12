@@ -4,17 +4,20 @@ namespace App\Application\Api\Post;
 
 use App\Application\Api\Post\Validators\PostApiRequestValidator;
 use App\Domain\Post\model\Post;
+use App\Domain\Post\model\QuotePost;
 use App\Domain\Post\model\ReplyPost;
 use App\Domain\Post\repository\PostRepository;
 use App\Domain\User\actions\UserCantPostAction;
 use App\Domain\User\Exceptions\UserExceedTotalPostsError;
 use App\Domain\User\models\Follows;
+use App\Domain\User\models\User;
 use App\infra\Http\Controllers\Controller;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PostApiController extends Controller
 {
@@ -59,14 +62,20 @@ class PostApiController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
+    public function search(Request $request, PostRepository $postRepository)
     {
-        //
+        $search = $request->search;
+        $keywords = explode(' ', $search);
+        $posts = Post::where(function ($query) use ($keywords){
+            foreach ($keywords as $word) {
+                $query->orWhere('content', 'like', '%'.$word.'%');
+            }
+        })->select("user_id","content","user_id", "id as post_id");
+        $quotePosts = QuotePost::where(function ($query) use ($keywords){
+            foreach ($keywords as $word) {
+                $query->orWhere('content', 'like', '%'.$word.'%');
+            }
+        })->select("user_id","content","user_id", "post_id");;
+        return $posts->union($quotePosts)->get();
     }
 }

@@ -19,6 +19,7 @@ Route::controller(\App\Application\Api\Post\PostApiController::class)->middlewar
     Route::get('', 'index');
     Route::post('', 'store');
     Route::get('/reply', 'replyPosts');
+    Route::post('search', 'search');
 });
 
 Route::controller(\App\Application\Api\Post\RepostApiController::class)->middleware('mockUser')->prefix('repost')->group(function (){

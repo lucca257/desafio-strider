@@ -19,9 +19,9 @@ class MockUserMiddleware
     public function handle(Request $request, Closure $next): mixed
     {
         $request->headers->set('Accept', 'application/json');
-//        if(env('APP_ENV') === 'local'){
-//            Auth::setUser(User::first());
-//        }
+        if(env('APP_ENV') === 'local'){
+            Auth::setUser(User::first());
+        }
         return $next($request);
     }
 }
